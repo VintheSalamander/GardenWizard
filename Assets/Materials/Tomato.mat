@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TreeTrunk
-  m_Shader: {fileID: -6465566751694194690, guid: 5cde1a000302a3f41bfc853561a724c1,
+  m_Name: Tomato
+  m_Shader: {fileID: -6465566751694194690, guid: 00e60029ab6f17d46b889cdfb0322589,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,13 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 8.53
+    - _AngleOffset: 43
+    - _CellDensity: 11.43
+    - _NoiseScale: 59.64
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step: 0.47
+    - _Step: 0.42
     m_Colors:
-    - _Color: {r: 1.5867461, g: 0.80589163, b: 0.34429374, a: 0}
-    - _Color_1: {r: 0.5320754, g: 0.19322988, b: 0.08734065, a: 0}
+    - _Color: {r: 2.2602925, g: 0, b: 0, a: 0}
+    - _Color_1: {r: 0.2622641, g: 0.0077900225, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4095402501539465964
 MonoBehaviour:

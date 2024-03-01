@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Plant2
+  m_Name: Plant2 2
   m_Shader: {fileID: -6465566751694194690, guid: 5cde1a000302a3f41bfc853561a724c1,
     type: 3}
   m_Parent: {fileID: 0}
@@ -42,13 +42,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 8.53
+    - _NoiseScale: 4.1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step: 0.29
+    - _Step: 0.71
     m_Colors:
-    - _Color: {r: 0.6143107, g: 2.1333337, b: 1.084198, a: 0}
-    - _Color_1: {r: 0.033413976, g: 0.07169801, b: 0.046175316, a: 0}
+    - _Color: {r: 0.04239755, g: 0.029156385, b: 0.011439336, a: 0}
+    - _Color_1: {r: 4, g: 1.8427273, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4095402501539465964
 MonoBehaviour:
