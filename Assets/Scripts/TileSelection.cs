@@ -7,14 +7,14 @@ using UnityEngine.Tilemaps;
 public enum TileState
 {
     Normal,
-    Watered,
     Seeded,
-    Planted
+    Watered,
+    Grown
 }
 
 public class Tile : MonoBehaviour
 {
-    
+    public ActionController actionController;
     public Material groundMat;
     public Material wateredMat;
     TileState currentState;
@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour
     Collider colliderTile;
     Camera cam;
     bool isSelected;
+
+    GameObject currentPlant;
 
     // Start is called before the first frame update
     void Awake()
@@ -48,8 +50,7 @@ public class Tile : MonoBehaviour
             rendererTile.material.SetColor("_SquareTop", Color.white);
             isSelected = true;
         }else{
-            switch (currentState)
-            {
+            switch (currentState){
                 case TileState.Normal:
                     rendererTile.material.SetColor("_SquareTop", groundMat.GetColor("_SquareTop"));
                     break;
@@ -57,10 +58,8 @@ public class Tile : MonoBehaviour
                     rendererTile.material.SetColor("_SquareTop", wateredMat.GetColor("_SquareTop"));
                     break;
                 case TileState.Seeded:
-                    // Handle Seeded state
                     break;
-                case TileState.Planted:
-                    // Handle Planted state
+                case TileState.Grown:
                     break;
                 default:
                     break;
@@ -70,10 +69,23 @@ public class Tile : MonoBehaviour
 
         if(isSelected){
             if (Input.GetMouseButtonDown(0)){
-                rendererTile.material = wateredMat;
-                currentState = TileState.Watered;
+                actionController.DoAction(gameObject);
+            }
+            if (Input.GetKeyDown(KeyCode.C)){
+                currentPlant.GetComponent<Plant>().WaterPlant();
             }
         }
+    }
+
+    public TileState GetCurrentState(){
+        return currentState;
+    }
+    public void SetCurrentPlant(GameObject newPlant){
+        currentPlant = newPlant;
+    }
+
+    public GameObject GetCurrentPlant(){
+        return currentPlant;
     }
 
 }
