@@ -61,8 +61,8 @@ public class ActionController : MonoBehaviour
                 }
                 break;
             case ActionType.PlantSeed:
-                GameObject newPlant = null;
-                if(tileState == TileState.Normal){
+                GameObject newPlant = tile.GetCurrentPlant();
+                if(newPlant == null && tileState == TileState.Normal){
                     Vector3 tilePos = tile.transform.position;
                     switch(currPlantType){
                         case PlantType.Tomato:
