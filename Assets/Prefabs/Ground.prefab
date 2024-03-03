@@ -135,9 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324fe4cc1e86fee4c825aa10c808fb74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionController: {fileID: 0}
   groundMat: {fileID: 2100000, guid: adf91ecc61bf0f14f8f7e492b3178097, type: 2}
   wateredMat: {fileID: 2100000, guid: e178721e4a742df44b5402d977469031, type: 2}
-  wateredColors:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  seededMat: {fileID: 2100000, guid: 3cf26cb39998d5842bc6559a8dbb04e8, type: 2}
+  grownMat: {fileID: 2100000, guid: c14308557cee01449a2504a6f157e79a, type: 2}

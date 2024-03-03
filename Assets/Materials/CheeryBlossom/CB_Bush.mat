@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Plant2 2
-  m_Shader: {fileID: -6465566751694194690, guid: 5cde1a000302a3f41bfc853561a724c1,
+  m_Name: CB_Bush
+  m_Shader: {fileID: -6465566751694194690, guid: 00e60029ab6f17d46b889cdfb0322589,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,13 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 4.1
+    - _AngleOffset: 43
+    - _CellDensity: 33.5
+    - _NoiseScale: 59.64
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step: 0.71
+    - _Step: 0.42
     m_Colors:
-    - _Color: {r: 0.04239755, g: 0.029156385, b: 0.011439336, a: 0}
-    - _Color_1: {r: 4, g: 1.8427273, b: 0, a: 0}
+    - _Color: {r: 2.7308724, g: 0.67498916, b: 1.9085197, a: 0}
+    - _Color_1: {r: 0.690566, g: 0.06645068, b: 0.50292355, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4095402501539465964
 MonoBehaviour:

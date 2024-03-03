@@ -17,6 +17,8 @@ public class Tile : MonoBehaviour
     public ActionController actionController;
     public Material groundMat;
     public Material wateredMat;
+    public Material seededMat;
+    public Material grownMat;
     TileState currentState;
     Renderer rendererTile;
     Collider colliderTile;
@@ -58,8 +60,10 @@ public class Tile : MonoBehaviour
                     rendererTile.material.SetColor("_SquareTop", wateredMat.GetColor("_SquareTop"));
                     break;
                 case TileState.Seeded:
+                    rendererTile.material.SetColor("_SquareTop", seededMat.GetColor("_SquareTop"));
                     break;
                 case TileState.Grown:
+                    rendererTile.material.SetColor("_SquareTop", groundMat.GetColor("_SquareTop"));
                     break;
                 default:
                     break;
@@ -71,14 +75,31 @@ public class Tile : MonoBehaviour
             if (Input.GetMouseButtonDown(0)){
                 actionController.DoAction(gameObject);
             }
-            if (Input.GetKeyDown(KeyCode.C)){
-                currentPlant.GetComponent<Plant>().WaterPlant();
-            }
         }
     }
 
     public TileState GetCurrentState(){
         return currentState;
+    }
+
+    public void SetTileState(TileState newState){
+        currentState = newState;
+        switch (currentState){
+            case TileState.Normal:
+                rendererTile.material = groundMat;
+                break;
+            case TileState.Watered:
+                rendererTile.material = wateredMat;
+                break;
+            case TileState.Seeded:
+                rendererTile.material = seededMat;
+                break;
+            case TileState.Grown:
+                rendererTile.material = grownMat;
+                break;
+            default:
+                break;
+        }
     }
     public void SetCurrentPlant(GameObject newPlant){
         currentPlant = newPlant;

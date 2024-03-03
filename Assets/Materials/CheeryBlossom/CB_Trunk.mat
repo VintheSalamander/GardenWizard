@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TreeBushed
-  m_Shader: {fileID: -6465566751694194690, guid: 00e60029ab6f17d46b889cdfb0322589,
+  m_Name: CB_Trunk
+  m_Shader: {fileID: -6465566751694194690, guid: 5cde1a000302a3f41bfc853561a724c1,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,15 +42,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AngleOffset: 43
-    - _CellDensity: 33.5
-    - _NoiseScale: 59.64
+    - _NoiseScale: 8.53
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step: 0.42
+    - _Step: 0.37
     m_Colors:
-    - _Color: {r: 2.7308724, g: 0.67498916, b: 1.9085197, a: 0}
-    - _Color_1: {r: 0.690566, g: 0.06645068, b: 0.50292355, a: 0}
+    - _Color: {r: 1.4461107, g: 1.7925391, b: 1.7427347, a: 0}
+    - _Color_1: {r: 0.10253938, g: 0.13317783, b: 0.12909146, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4095402501539465964
 MonoBehaviour:

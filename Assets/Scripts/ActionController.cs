@@ -4,8 +4,8 @@ using TMPro;
 using UnityEngine;
 
 public enum ActionType{
-    PlantSeed,
     None,
+    PlantSeed,
     SpellThrow
     
 }
@@ -52,11 +52,40 @@ public class ActionController : MonoBehaviour
                         }
                         break;
                     case TileState.Seeded:
-                        tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
+                        switch (currSpellType){
+                            case SpellType.Water:
+                                tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
+                                tile.SetTileState(TileState.Watered);
+                                break;
+                            case SpellType.Fire:
+                                textAid.text = "Dont burn here!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                        }
                         break;
                     case TileState.Watered:
+                        switch (currSpellType){
+                            case SpellType.Water:
+                                tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
+                                tile.SetTileState(TileState.Watered);
+                                break;
+                            case SpellType.Fire:
+                                textAid.text = "Stop unwatering!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                        }
                         break;
                     case TileState.Grown:
+                        switch (currSpellType){
+                            case SpellType.Water:
+                                textAid.text = "Already grown!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.Fire:
+                                textAid.text = "That is healthy!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                        }
                         break;
                     default:
                         break;
@@ -79,6 +108,7 @@ public class ActionController : MonoBehaviour
                     }
                     newPlant.transform.SetParent(tile.transform);
                     tile.SetCurrentPlant(newPlant);
+                    tile.SetTileState(TileState.Seeded);
                 }
                 break;
             default:
