@@ -34,16 +34,15 @@ public class Plant : MonoBehaviour
 
     public void WaterPlant(){
         if(countWatered == 0){
+            Debug.Log("Check");
             plantAnim.SetBool("isGrowing", true);
             seedAnim.SetBool("isGrowing", true);
         }
         countWatered += 1;
         StartCoroutine(PlayGrowingSmoothly(timeWateredGrownSec));
-        if(countWatered == timesToBeWatered){
-            plantAnim.Play("Growing", 0, 1f);
-            plantAnim.SetBool("isGrowing", false);
-            seedAnim.SetBool("isGrowing", false);
-        }
+        Debug.Log(countWatered);
+        Debug.Log(countWatered);
+        Debug.Log(timesToBeWatered);
     }
 
     IEnumerator PlayGrowingSmoothly(float timeToGrowSecs)
@@ -51,11 +50,21 @@ public class Plant : MonoBehaviour
         plantAnim.speed = 1;
         plantAnim.Play("Growing", 0, 0f);
         //TESTTTTTTTTTT
-        float startAnimTime = timeToGrowSecs * countWatered;
-        for (float t = startAnimTime; t <= 1f; t += startAnimTime + timeToGrowSecs / timesToBeWatered)
+        Debug.Log(timesToBeWatered);
+        float startAnimTime = 1f/timesToBeWatered * (countWatered - 1);
+        Debug.Log(1/timesToBeWatered);
+        float endAnimTime = 1f/timesToBeWatered * countWatered;
+        Debug.Log(startAnimTime);
+        Debug.Log(endAnimTime);
+        for (float t = startAnimTime; t <= endAnimTime; t += timeToGrowSecs)
         {
             plantAnim.Play("Growing", 0, t);
             yield return new WaitForFixedUpdate();
+        }
+        
+        if(countWatered == timesToBeWatered){
+            plantAnim.SetBool("isGrowing", false);
+            seedAnim.SetBool("isGrowing", false);
         }
         plantAnim.speed = 0;
     }

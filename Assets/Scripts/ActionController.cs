@@ -29,7 +29,9 @@ public class ActionController : MonoBehaviour
 
     public void DoAction(GameObject tileObject){
         Tile tile = tileObject.GetComponent<Tile>();
-        TileState tileState = tile.GetCurrentState(); 
+        TileState tileState = tile.GetCurrentState();
+        Debug.Log(currentAction);
+        Debug.Log(currPlantType);
         switch (currentAction){
             case ActionType.None:
                 textAid.text = "Choose your action first";
@@ -50,7 +52,7 @@ public class ActionController : MonoBehaviour
                         }
                         break;
                     case TileState.Seeded:
-                        GameObject plant = tile.GetCurrentPlant();
+                        tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
                         break;
                     case TileState.Watered:
                         break;
@@ -69,10 +71,10 @@ public class ActionController : MonoBehaviour
                             newPlant = Instantiate(tomatoPlant, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
                             break;
                         case PlantType.CherryBlossom:
-                            newPlant = Instantiate(tomatoPlant, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
+                            newPlant = Instantiate(cherryBlossom, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
                             break;
                         case PlantType.Daisy:
-                            newPlant = Instantiate(tomatoPlant, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
+                            newPlant = Instantiate(daisyFlower, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
                             break;
                     }
                     newPlant.transform.SetParent(tile.transform);
@@ -89,5 +91,17 @@ public class ActionController : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTextInSec);
         textAid.text = "";
+    }
+
+    public static void ChangeCurrentAction(ActionType newAction){
+        currentAction = newAction;
+    }
+
+    public static void ChangeCurrentSeed(PlantType newSeed){
+        currPlantType = newSeed;
+    }
+
+    public static void ChangeCurrentSpell(SpellType newSpell){
+        currSpellType = newSpell;
     }
 }
