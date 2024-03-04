@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plant: {fileID: 7479953630817802228}
   seed: {fileID: 2270275132850131614}
-  timeToGrowMins: 0.5
+  timeToGrowMins: 3
   timesToBeWatered: 2
   plantType: 0
 --- !u!1 &1418744337949068723

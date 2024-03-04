@@ -30,8 +30,6 @@ public class ActionController : MonoBehaviour
     public void DoAction(GameObject tileObject){
         Tile tile = tileObject.GetComponent<Tile>();
         TileState tileState = tile.GetCurrentState();
-        Debug.Log(currentAction);
-        Debug.Log(currPlantType);
         switch (currentAction){
             case ActionType.None:
                 textAid.text = "Choose your action first";
@@ -66,8 +64,8 @@ public class ActionController : MonoBehaviour
                     case TileState.Watered:
                         switch (currSpellType){
                             case SpellType.Water:
-                                tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
-                                tile.SetTileState(TileState.Watered);
+                                textAid.text = "No more water!";
+                                StartCoroutine(EmptyTextAfterDelay());
                                 break;
                             case SpellType.Fire:
                                 textAid.text = "Stop unwatering!";

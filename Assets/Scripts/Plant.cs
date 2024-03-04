@@ -21,14 +21,23 @@ public class Plant : MonoBehaviour
 
     private Animator plantAnim;
     private Animator seedAnim;
-    private float timeWateredGrownSec;
+    private float timeWateredGrown;
     private int countWatered;
 
     void Awake(){
         plantAnim = plant.GetComponent<Animator>();
         seedAnim = seed.GetComponent<Animator>();
-        timeWateredGrownSec = Time.fixedDeltaTime /(timeToGrowMins / timesToBeWatered * 60f);
+        timeWateredGrown = Time.fixedDeltaTime /(timeToGrowMins * 60f / timesToBeWatered );
+        Debug.Log(timeWateredGrown);
         countWatered = 0;
+    }
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Y)){
+            Debug.Log("Check");
+            timeWateredGrown = timeWateredGrown*6;
+            Debug.Log(timeWateredGrown);
+        }
     }
 
     public void WaterPlant(){
@@ -37,10 +46,11 @@ public class Plant : MonoBehaviour
             seedAnim.SetBool("isShrinking", true);
         }
         countWatered += 1;
-        StartCoroutine(PlayGrowingSmoothly(timeWateredGrownSec));
+        Debug.Log(timeWateredGrown);
+        StartCoroutine(PlayGrowingSmoothly(timeWateredGrown));
     }
 
-    IEnumerator PlayGrowingSmoothly(float timeToGrowSecs)
+    IEnumerator PlayGrowingSmoothly(float timeToGrow)
     {
         plantAnim.speed = 1;
         seedAnim.speed = 1;
@@ -48,7 +58,7 @@ public class Plant : MonoBehaviour
         seedAnim.Play("Shrinking", 0, 0f);
         float startAnimTime = 1f/timesToBeWatered * (countWatered - 1);
         float endAnimTime = 1f/timesToBeWatered * countWatered;
-        for (float t = startAnimTime; t <= endAnimTime; t += timeToGrowSecs)
+        for (float t = startAnimTime; t <= endAnimTime; t += timeToGrow)
         {
             plantAnim.Play("Growing", 0, t);
             seedAnim.Play("Shrinking", 0, t);
