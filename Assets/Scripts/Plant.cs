@@ -12,12 +12,13 @@ public enum PlantType
 
 public class Plant : MonoBehaviour
 {
-
+    public GameObject plantPrefab;
     public GameObject plant;
     public GameObject seed;
     public float timeToGrowMins;
     public int timesToBeWatered;
     public PlantType plantType;
+    private bool isFreezed;
 
     private Animator plantAnim;
     private Animator seedAnim;
@@ -31,6 +32,7 @@ public class Plant : MonoBehaviour
         seedAnim = seed.GetComponent<Animator>();
         timeWateredGrown = Time.fixedDeltaTime /(timeToGrowMins * 60f / timesToBeWatered );
         countWatered = 0;
+        isFreezed = false;
     }
 
     void Update(){
@@ -63,8 +65,30 @@ public class Plant : MonoBehaviour
         seedAnim.Play("Shrinking", 0, 0f);
         float startAnimTime = 1f/timesToBeWatered * (countWatered - 1);
         float endAnimTime = 1f/timesToBeWatered * countWatered;
+        if(Random.value < 0.5f){
+            isFreezed = true;
+        }
         for (float t = startAnimTime; t <= endAnimTime; t += timeToGrow)
         {
+            if(isFreezed && t>endAnimTime/2){
+                actionController.FreezePlant(transform);
+                Tile tile = transform.parent.GetComponent<Tile>();
+                tile.SetTileState(TileState.Frozen);
+                plantAnim.speed = 0;
+                seedAnim.speed = 0;
+
+                Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
+                Material normalGrowingMat = growEffectRend.material;
+                growEffectRend.material = actionController.GetGrowinFrozenMat();
+
+                yield return new WaitUntil(() => !isFreezed);
+
+                growEffectRend.material = normalGrowingMat;
+
+                plantAnim.speed = 1;
+                seedAnim.speed = 1;
+                tile.SetTileState(TileState.Watered);
+            }
             plantAnim.Play("Growing", 0, t);
             seedAnim.Play("Shrinking", 0, t);
             yield return new WaitForFixedUpdate();
@@ -79,7 +103,14 @@ public class Plant : MonoBehaviour
         }
         plantAnim.speed = 0;
         seedAnim.speed = 0;
-        Debug.Log("Check");
         Destroy(growingObject);
+    }
+
+    public void UnFreezePlant(){
+        isFreezed = false;
+    }
+
+    public PlantType GetPlantType(){
+        return plantType;
     }
 }

@@ -9,6 +9,7 @@ public enum TileState
     Normal,
     Seeded,
     Watered,
+    Frozen,
     Grown
 }
 
@@ -19,6 +20,8 @@ public class Tile : MonoBehaviour
     public Material wateredMat;
     public Material seededMat;
     public Material grownMat;
+    public Material frozenMat;
+
     TileState currentState;
     Renderer rendererTile;
     Collider colliderTile;
@@ -62,6 +65,9 @@ public class Tile : MonoBehaviour
                 case TileState.Seeded:
                     rendererTile.material.SetColor("_SquareTop", seededMat.GetColor("_SquareTop"));
                     break;
+                case TileState.Frozen:
+                    rendererTile.material.SetColor("_SquareTop", frozenMat.GetColor("_SquareTop"));
+                    break;
                 case TileState.Grown:
                     rendererTile.material.SetColor("_SquareTop", groundMat.GetColor("_SquareTop"));
                     break;
@@ -93,6 +99,9 @@ public class Tile : MonoBehaviour
                 break;
             case TileState.Seeded:
                 rendererTile.material = seededMat;
+                break;
+            case TileState.Frozen:
+                rendererTile.material = frozenMat;
                 break;
             case TileState.Grown:
                 rendererTile.material = grownMat;

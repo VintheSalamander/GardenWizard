@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SeedPanel : MonoBehaviour
 {
+    public ActionController actionController;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,17 +18,17 @@ public class SeedPanel : MonoBehaviour
     }
 
     public void ChangeSeedToTomato(){
-        ActionController.ChangeCurrentAction(ActionType.PlantSeed);
-        ActionController.ChangeCurrentSeed(PlantType.Tomato);
+        actionController.ChangeCurrentAction(ActionType.PlantSeed);
+        actionController.ChangeCurrentSeed(PlantType.Tomato);
     }
 
     public void ChangeSeedToCherryBlossom(){
-        ActionController.ChangeCurrentAction(ActionType.PlantSeed);
-        ActionController.ChangeCurrentSeed(PlantType.CherryBlossom);
+        actionController.ChangeCurrentAction(ActionType.PlantSeed);
+        actionController.ChangeCurrentSeed(PlantType.CherryBlossom);
     }
 
     public void ChangeSeedToDaisy(){
-        ActionController.ChangeCurrentAction(ActionType.PlantSeed);
-        ActionController.ChangeCurrentSeed(PlantType.Daisy);
+        actionController.ChangeCurrentAction(ActionType.PlantSeed);
+        actionController.ChangeCurrentSeed(PlantType.Daisy);
     }
 }

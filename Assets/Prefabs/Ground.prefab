@@ -140,3 +140,4 @@ MonoBehaviour:
   wateredMat: {fileID: 2100000, guid: e178721e4a742df44b5402d977469031, type: 2}
   seededMat: {fileID: 2100000, guid: 3cf26cb39998d5842bc6559a8dbb04e8, type: 2}
   grownMat: {fileID: 2100000, guid: c14308557cee01449a2504a6f157e79a, type: 2}
+  frozenMat: {fileID: 2100000, guid: e054888d6e3065f49ab49c7a5978ea58, type: 2}

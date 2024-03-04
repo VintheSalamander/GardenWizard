@@ -23,13 +23,19 @@ public class ActionController : MonoBehaviour
     public GameObject tomatoPlant;
     public GameObject cherryBlossom;
     public GameObject daisyFlower;
-    public GameObject waterSplash;
+    public GameObject waterEffect;
     public GameObject growingEffect;
+    public GameObject fireEffect;
+    public Material frozenMat;
+    public Material growingFrozenEffectMat;
     public TextMeshProUGUI textAid;
+    public TextMeshProUGUI textAction;
     public float delayTextInSec;
     public float delayWateringInSec;
 
-
+    void Awake(){
+        textAction.text = "Action: None";
+    }
     public void DoAction(GameObject tileObject){
         Tile tile = tileObject.GetComponent<Tile>();
         TileState tileState = tile.GetCurrentState();
@@ -58,7 +64,7 @@ public class ActionController : MonoBehaviour
                                 Vector3 tilePos = tile.transform.position;
                                 tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant(this, delayWateringInSec);
                                 tile.SetTileState(TileState.Watered);
-                                Instantiate(waterSplash, new Vector3(tilePos.x, tilePos.y + 0.5001f, tilePos.z), Quaternion.identity);
+                                Instantiate(waterEffect, new Vector3(tilePos.x, tilePos.y + 0.5001f, tilePos.z), Quaternion.identity);
                                 break;
                             case SpellType.Fire:
                                 textAid.text = "Dont burn here!";
@@ -75,6 +81,19 @@ public class ActionController : MonoBehaviour
                             case SpellType.Fire:
                                 textAid.text = "Stop unwatering!";
                                 StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                        }
+                        break;
+                    case TileState.Frozen:
+                        switch (currSpellType){
+                            case SpellType.Water:
+                                textAid.text = "More ice?";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.Fire:
+                                Vector3 tilePos = tile.transform.position;
+                                GameObject fireInstance = Instantiate(fireEffect, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
+                                StartCoroutine(UnFreezeAndDeleteFire(fireInstance, tile.GetCurrentPlant()));
                                 break;
                         }
                         break;
@@ -126,20 +145,96 @@ public class ActionController : MonoBehaviour
         textAid.text = "";
     }
 
-    public static void ChangeCurrentAction(ActionType newAction){
+    public void ChangeCurrentAction(ActionType newAction){
         currentAction = newAction;
     }
 
-    public static void ChangeCurrentSeed(PlantType newSeed){
-        currPlantType = newSeed;
+    IEnumerator UnFreezeAndDeleteFire(GameObject fire, GameObject plantToUnfreeze)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Plant plant = plantToUnfreeze.GetComponent<Plant>();
+        plant.UnFreezePlant();
+        PlantType plantType = plant.GetPlantType();
+        GameObject prefabToCompare = null;
+        switch(plantType){
+            case PlantType.Tomato:
+                prefabToCompare = tomatoPlant;
+                break;
+            case PlantType.CherryBlossom:
+                prefabToCompare = cherryBlossom;
+                break;
+            case PlantType.Daisy:
+                prefabToCompare = daisyFlower;
+                break;
+        }
+        UnFreezeWithComparison(prefabToCompare.transform, plantToUnfreeze.transform);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(fire);
     }
 
-    public static void ChangeCurrentSpell(SpellType newSpell){
+    void UnFreezeWithComparison(Transform prefabTransform, Transform plantTransform){
+        for (int i = 0; i < plantTransform.childCount; i++)
+        {
+            Transform child = plantTransform.GetChild(i);
+            Transform childPrefab = prefabTransform.GetChild(i);
+            MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
+            MeshRenderer meshRendererPrefab = childPrefab.GetComponent<MeshRenderer>();
+            if (meshRenderer != null){
+                meshRenderer.material = meshRendererPrefab.sharedMaterial;
+            }
+            if (child.childCount > 0){
+                UnFreezeWithComparison(childPrefab, child);
+            }
+        }
+    }
+
+    public void ChangeCurrentSeed(PlantType newSeed){
+        currPlantType = newSeed;
+        switch(currPlantType){
+            case PlantType.Tomato:
+                textAction.text = "Action: Tomato";
+                break;
+            case PlantType.CherryBlossom:
+                textAction.text = "Action: Cherry Blossom";
+                break;
+            case PlantType.Daisy:
+                textAction.text = "Action: Daisy";
+                break;
+        }
+    }
+
+    public void ChangeCurrentSpell(SpellType newSpell){
         currSpellType = newSpell;
+        switch(currSpellType){
+            case SpellType.Water:
+                textAction.text = "Action: Water";
+                break;
+            case SpellType.Fire:
+                textAction.text = "Action: Fire";
+                break;
+        }
     }
 
     public GameObject StartGrowingEffect(Vector3 position){
         GameObject growingObject = Instantiate(growingEffect, new Vector3(position.x, position.y, position.z), Quaternion.identity);
         return growingObject;
+    }
+
+    public void FreezePlant(Transform plantTransform){
+        for (int i = 0; i < plantTransform.childCount; i++)
+        {
+            Transform child = plantTransform.GetChild(i);
+            MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
+            if (meshRenderer != null){
+                meshRenderer.material = frozenMat;
+            }
+            if (child.childCount > 0){
+                FreezePlant(child);
+            }
+        }
+    }
+
+    public Material GetGrowinFrozenMat(){
+        return growingFrozenEffectMat;
     }
 }
