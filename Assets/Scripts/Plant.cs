@@ -23,30 +23,35 @@ public class Plant : MonoBehaviour
     private Animator seedAnim;
     private float timeWateredGrown;
     private int countWatered;
+    private ActionController actionController;
+    private GameObject growingObject;
 
     void Awake(){
         plantAnim = plant.GetComponent<Animator>();
         seedAnim = seed.GetComponent<Animator>();
         timeWateredGrown = Time.fixedDeltaTime /(timeToGrowMins * 60f / timesToBeWatered );
-        Debug.Log(timeWateredGrown);
         countWatered = 0;
     }
 
     void Update(){
         if(Input.GetKeyDown(KeyCode.Y)){
-            Debug.Log("Check");
             timeWateredGrown = timeWateredGrown*6;
-            Debug.Log(timeWateredGrown);
         }
     }
 
-    public void WaterPlant(){
+    public void WaterPlant(ActionController actCon, float delay){
+        actionController = actCon;
+        StartCoroutine(WateringWithDelay(delay));
+    }
+
+    IEnumerator WateringWithDelay(float delay){
+        yield return new WaitForSeconds(delay);
         if(countWatered == 0){
             plantAnim.SetBool("isGrowing", true);
             seedAnim.SetBool("isShrinking", true);
         }
+        growingObject = actionController.StartGrowingEffect(transform.position);
         countWatered += 1;
-        Debug.Log(timeWateredGrown);
         StartCoroutine(PlayGrowingSmoothly(timeWateredGrown));
     }
 
@@ -74,5 +79,7 @@ public class Plant : MonoBehaviour
         }
         plantAnim.speed = 0;
         seedAnim.speed = 0;
+        Debug.Log("Check");
+        Destroy(growingObject);
     }
 }

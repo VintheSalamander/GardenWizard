@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WateringMat
+  m_Name: WateringMat 1
   m_Shader: {fileID: -6465566751694194690, guid: b67a07e60a2c7d9498e3d597f1ddbb71,
     type: 3}
   m_Parent: {fileID: 0}
@@ -55,10 +55,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Float: 0
+    - _Power: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: 1
     m_Colors:
-    - _Color: {r: 0, g: 1.5577674, b: 3.3056602, a: 0}
-    - _Color_1: {r: 0.05672476, g: 0.066649556, b: 0.96981126, a: 0}
+    - _Color: {r: 0.062150165, g: 0.2527056, b: 0.7660377, a: 0}
+    - _Color_1: {r: 0.44845134, g: 0.67823964, b: 0.93207544, a: 0}
   m_BuildTextureStacks: []

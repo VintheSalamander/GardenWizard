@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3493575517325351943
+--- !u!114 &-6522503795547401393
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grown
-  m_Shader: {fileID: -6465566751694194690, guid: 6355cdcf9143e4f4382b2d7151e996b0,
+  m_Name: WateringMat
+  m_Shader: {fileID: -6465566751694194690, guid: b67a07e60a2c7d9498e3d597f1ddbb71,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,8 +37,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_8d7f245770ed4dc8b1149648968b5674_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: df198308eb4c06e48a08a3a8aca4c14c, type: 3}
+    - _SampleTexture2D_ff23050311524cfc98a971ab7801b952_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 579929dd517d1654fb481e390d28a4db, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -55,18 +55,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AngleOffSet: 3.93
-    - _CellDensity: 3.83
+    - _Alpha: 0
+    - _Float: -0.1
+    - _Power: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Speed: 1
     m_Colors:
-    - _Border: {r: 0.69366497, g: 0.27062297, b: 0.7509433, a: 0}
-    - _Color: {r: 0.5698112, g: 0.3361659, b: 0.11503735, a: 0}
-    - _Color_1: {r: 0.3283019, g: 0.18366322, b: 0.03902455, a: 0}
-    - _Color_2: {r: 0.3056603, g: 0.171135, b: 0.082470596, a: 0}
-    - _OffSetFace: {r: 0.25, g: -0.25, b: 0, a: 0}
-    - _Primary: {r: 0.8490566, g: 0.32520464, b: 0.8359605, a: 0}
-    - _Secondary: {r: 0.6730155, g: 0.26495543, b: 0.7056604, a: 0}
-    - _SizeFace: {r: 0.45, g: 0.45, b: 0, a: 0}
-    - _SquareTop: {r: 0.5593544, g: 0.24728371, b: 0.5773585, a: 0}
+    - _Color: {r: 0.027451, g: 0.2197423, b: 0.7372549, a: 0}
+    - _Color_1: {r: 0.052482445, g: 0.7325054, b: 1.4758214, a: 0}
   m_BuildTextureStacks: []

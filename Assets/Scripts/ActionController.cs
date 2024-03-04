@@ -23,8 +23,11 @@ public class ActionController : MonoBehaviour
     public GameObject tomatoPlant;
     public GameObject cherryBlossom;
     public GameObject daisyFlower;
+    public GameObject waterSplash;
+    public GameObject growingEffect;
     public TextMeshProUGUI textAid;
     public float delayTextInSec;
+    public float delayWateringInSec;
 
 
     public void DoAction(GameObject tileObject){
@@ -52,8 +55,10 @@ public class ActionController : MonoBehaviour
                     case TileState.Seeded:
                         switch (currSpellType){
                             case SpellType.Water:
-                                tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant();
+                                Vector3 tilePos = tile.transform.position;
+                                tile.GetCurrentPlant().GetComponent<Plant>().WaterPlant(this, delayWateringInSec);
                                 tile.SetTileState(TileState.Watered);
+                                Instantiate(waterSplash, new Vector3(tilePos.x, tilePos.y + 0.5001f, tilePos.z), Quaternion.identity);
                                 break;
                             case SpellType.Fire:
                                 textAid.text = "Dont burn here!";
@@ -131,5 +136,10 @@ public class ActionController : MonoBehaviour
 
     public static void ChangeCurrentSpell(SpellType newSpell){
         currSpellType = newSpell;
+    }
+
+    public GameObject StartGrowingEffect(Vector3 position){
+        GameObject growingObject = Instantiate(growingEffect, new Vector3(position.x, position.y, position.z), Quaternion.identity);
+        return growingObject;
     }
 }
