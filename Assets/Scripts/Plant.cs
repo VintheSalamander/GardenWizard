@@ -74,6 +74,8 @@ public class Plant : MonoBehaviour
                 actionController.FreezePlant(transform);
                 Tile tile = transform.parent.GetComponent<Tile>();
                 tile.SetTileState(TileState.Frozen);
+                plantAnim.Play("Growing", 0, t);
+                seedAnim.Play("Shrinking", 0, t);
                 plantAnim.speed = 0;
                 seedAnim.speed = 0;
 
@@ -88,9 +90,10 @@ public class Plant : MonoBehaviour
                 plantAnim.speed = 1;
                 seedAnim.speed = 1;
                 tile.SetTileState(TileState.Watered);
+            }else{
+                plantAnim.Play("Growing", 0, t);
+                seedAnim.Play("Shrinking", 0, t);
             }
-            plantAnim.Play("Growing", 0, t);
-            seedAnim.Play("Shrinking", 0, t);
             yield return new WaitForFixedUpdate();
         }
         

@@ -69,7 +69,7 @@ public class Tile : MonoBehaviour
                     rendererTile.material.SetColor("_SquareTop", frozenMat.GetColor("_SquareTop"));
                     break;
                 case TileState.Grown:
-                    rendererTile.material.SetColor("_SquareTop", groundMat.GetColor("_SquareTop"));
+                    rendererTile.material.SetColor("_SquareTop", grownMat.GetColor("_SquareTop"));
                     break;
                 default:
                     break;
