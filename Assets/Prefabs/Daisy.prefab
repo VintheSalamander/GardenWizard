@@ -840,7 +840,7 @@ MonoBehaviour:
   plantPrefab: {fileID: 3388427679563196536}
   plant: {fileID: 5015052955214055626}
   seed: {fileID: 1992372605834502181}
-  timeToGrowMins: 1
+  timeToGrowMins: 0.25
   timesToBeWatered: 1
   plantType: 2
 --- !u!1 &3527366995004533201

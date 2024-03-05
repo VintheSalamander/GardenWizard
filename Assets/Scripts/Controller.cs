@@ -28,6 +28,8 @@ public class Controller : MonoBehaviour
     public GameObject growingEffect;
     public GameObject fireEffect;
     public GameObject electricalEffect;
+    public GameObject correctGrownEffect;
+    public GameObject wrongGrownEffect;
     public Material frozenMat;
     public Material evilMat;
     public Material growingFrozenEffectMat;
@@ -38,6 +40,7 @@ public class Controller : MonoBehaviour
     public TextMeshProUGUI textMoney;
     public float delayTextInSec;
     public float delayWateringInSec;
+    public ProgressBar progressBar;
     private int score;
     private int money;
 
@@ -188,6 +191,18 @@ public class Controller : MonoBehaviour
                         break;
                     case TileState.Evil:
                         switch (currSpellType){
+                            case SpellType.Water:
+                                textAid.text = "No don't let it grow";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.Fire:
+                                textAid.text = "Need stronger spell";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.WindCut:
+                                textAid.text = "Don't take that";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                             case SpellType.Electrical:
                                 Vector3 tilePos = tile.transform.position;
                                 Instantiate(electricalEffect, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
@@ -335,6 +350,12 @@ public class Controller : MonoBehaviour
             case SpellType.Fire:
                 textAction.text = "Action: Fire";
                 break;
+            case SpellType.Electrical:
+                textAction.text = "Action: Electrical";
+                break;
+            case SpellType.WindCut:
+                textAction.text = "Action: Wind Cut";
+                break;
         }
     }
 
@@ -382,11 +403,22 @@ public class Controller : MonoBehaviour
         
     }
 
+    public void CorrectFlowerGrownEffect(Vector3 position){
+        GameObject grownInstance = Instantiate(correctGrownEffect, new Vector3(position.x, position.y + 0.5f, position.z), Quaternion.identity);
+        Destroy(grownInstance, 3f);
+    }
+
+    public void WrongFlowerGrownEffect(Vector3 position){
+        GameObject grownInstance = Instantiate(wrongGrownEffect, new Vector3(position.x, position.y + 0.5f, position.z), Quaternion.identity);
+        Destroy(grownInstance, 3f);
+    }
+
     public void IncrementScore(){
         score += 1;
         textScore.text = ((int)((float)score/64*100)).ToString() + "%";
         money += 2;
         textMoney.text = money.ToString();
+        progressBar.SetProgress((int)((float)score/64*100));
     }
 
     public void DecrementScore(){
@@ -395,5 +427,11 @@ public class Controller : MonoBehaviour
             score = 0;
         }
         textScore.text = ((int)((float)score/64*100)).ToString() + "%";
+        progressBar.SetProgress((int)((float)score/64*100));
+    }
+
+    public void ReduceMoney(){
+        money -= 2;
+        textMoney.text = money.ToString();
     }
 }

@@ -116,6 +116,9 @@ public class Tile : MonoBehaviour
                 rendererTile.material = grownMat;
                 if(currentPlant.GetComponent<Plant>().GetPlantType() == correctPlant){
                     controller.IncrementScore();
+                    controller.CorrectFlowerGrownEffect(transform.position);
+                }else{
+                    controller.WrongFlowerGrownEffect(transform.position);
                 }
                 break;
             default:

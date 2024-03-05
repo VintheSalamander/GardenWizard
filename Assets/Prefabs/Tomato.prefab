@@ -49,9 +49,9 @@ MonoBehaviour:
   plantPrefab: {fileID: 184984720519629021}
   plant: {fileID: 7479953630817802228}
   seed: {fileID: 2270275132850131614}
-  timeToGrowMins: 3
+  timeToGrowMins: 1
   timesToBeWatered: 2
-  plantType: 5
+  plantType: 10
 --- !u!1 &1418744337949068723
 GameObject:
   m_ObjectHideFlags: 0

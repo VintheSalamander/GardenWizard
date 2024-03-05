@@ -73,9 +73,9 @@ public class Plant : MonoBehaviour
         if(minute % 2 == 0){
             randSec = 1-randSec;
         }
-        if(randSec < (float)System.DateTime.Now.Second/60){
+        if(randSec < (float)System.DateTime.Now.Millisecond/1000){
             isFreezed = true;
-        }else if(Random.Range(0, 9) == minute % 10){
+        }else if(Random.Range(0, 5) == minute % 5){
             isEvil = true;
         }
 
@@ -115,7 +115,7 @@ public class Plant : MonoBehaviour
                 growEffectRend.material = controller.GetGrowingFeatureMat(TileState.Evil);
 
                 yield return new WaitUntil(() => !isEvil);
-
+                controller.ReduceMoney();
                 growEffectRend.material = normalGrowingMat;
 
                 plantAnim.speed = 1;

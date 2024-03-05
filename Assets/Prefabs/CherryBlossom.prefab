@@ -176,9 +176,9 @@ MonoBehaviour:
   plantPrefab: {fileID: 7187108268300466039}
   plant: {fileID: 4660019364800727097}
   seed: {fileID: 2734128143398973130}
-  timeToGrowMins: 5
+  timeToGrowMins: 2
   timesToBeWatered: 3
-  plantType: 20
+  plantType: 30
 --- !u!1001 &5506458950745109864
 PrefabInstance:
   m_ObjectHideFlags: 0
