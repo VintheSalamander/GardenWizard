@@ -31,4 +31,9 @@ public class SpellPanel : MonoBehaviour
         controller.ChangeCurrentAction(ActionType.SpellThrow);
         controller.ChangeCurrentSpell(SpellType.WindCut);
     }
+
+    public void ChangeSpellToElectrical(){
+        controller.ChangeCurrentAction(ActionType.SpellThrow);
+        controller.ChangeCurrentSpell(SpellType.Electrical);
+    }
 }

@@ -12,6 +12,7 @@ public enum ActionType{
 public enum SpellType{
     Water,
     Fire,
+    Electrical,
     WindCut
 }
 
@@ -26,8 +27,11 @@ public class Controller : MonoBehaviour
     public GameObject waterEffect;
     public GameObject growingEffect;
     public GameObject fireEffect;
+    public GameObject electricalEffect;
     public Material frozenMat;
+    public Material evilMat;
     public Material growingFrozenEffectMat;
+    public Material growingEvilEffectMat;
     public TextMeshProUGUI textAid;
     public TextMeshProUGUI textAction;
     public TextMeshProUGUI textScore;
@@ -71,6 +75,10 @@ public class Controller : MonoBehaviour
                                 textAid.text = "Careful with that!";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
+                            case SpellType.Electrical:
+                                textAid.text = "Stop that!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                             case SpellType.WindCut:
                                 textAid.text = "Nothing to cut here";
                                 StartCoroutine(EmptyTextAfterDelay());
@@ -87,6 +95,10 @@ public class Controller : MonoBehaviour
                                 break;
                             case SpellType.Fire:
                                 textAid.text = "Dont burn here!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.Electrical:
+                                textAid.text = "No don't do that";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
                             case SpellType.WindCut:
@@ -109,6 +121,10 @@ public class Controller : MonoBehaviour
                                 textAid.text = "Is growing be patient";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
+                            case SpellType.Electrical:
+                                textAid.text = "Let it grow";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                         }
                         break;
                     case TileState.Frozen:
@@ -124,6 +140,10 @@ public class Controller : MonoBehaviour
                                 break;
                             case SpellType.WindCut:
                                 textAid.text = "Can't cut ice...";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.Electrical:
+                                textAid.text = "Nope not this one";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
                         }
@@ -158,6 +178,20 @@ public class Controller : MonoBehaviour
                                 }
                                 textMoney.text = money.ToString();
                                 Destroy(plantObject);
+                                
+                                break;
+                            case SpellType.Electrical:
+                                textAid.text = "No evil here!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                        }
+                        break;
+                    case TileState.Evil:
+                        switch (currSpellType){
+                            case SpellType.Electrical:
+                                Vector3 tilePos = tile.transform.position;
+                                Instantiate(electricalEffect, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
+                                StartCoroutine(UnEvil(tile.GetCurrentPlant()));
                                 break;
                         }
                         break;
@@ -232,12 +266,36 @@ public class Controller : MonoBehaviour
                 Debug.LogError("Error in UnFreezeAndDeleteFire");
                 break;
         }
-        UnFreezeWithComparison(prefabToCompare.transform, plantToUnfreeze.transform);
+        UnFeatureWithComparison(prefabToCompare.transform, plantToUnfreeze.transform);
         yield return new WaitForSeconds(0.5f);
         Destroy(fire);
     }
 
-    void UnFreezeWithComparison(Transform prefabTransform, Transform plantTransform){
+    IEnumerator UnEvil(GameObject plantToUnevil)
+    {
+        Plant plant = plantToUnevil.GetComponent<Plant>();
+        plant.UnEvilPlant();
+        PlantType plantType = plant.GetPlantType();
+        GameObject prefabToCompare = null;
+        switch(plantType){
+            case PlantType.Tomato:
+                prefabToCompare = tomatoPlant;
+                break;
+            case PlantType.CherryBlossom:
+                prefabToCompare = cherryBlossom;
+                break;
+            case PlantType.Daisy:
+                prefabToCompare = daisyFlower;
+                break;
+            default:
+                Debug.LogError("Error in UnFreezeAndDeleteFire");
+                break;
+        }
+        UnFeatureWithComparison(prefabToCompare.transform, plantToUnevil.transform);
+        yield return null;
+    }
+
+    void UnFeatureWithComparison(Transform prefabTransform, Transform plantTransform){
         for (int i = 0; i < plantTransform.childCount; i++)
         {
             Transform child = plantTransform.GetChild(i);
@@ -248,7 +306,7 @@ public class Controller : MonoBehaviour
                 meshRenderer.material = meshRendererPrefab.sharedMaterial;
             }
             if (child.childCount > 0){
-                UnFreezeWithComparison(childPrefab, child);
+                UnFeatureWithComparison(childPrefab, child);
             }
         }
     }
@@ -285,22 +343,43 @@ public class Controller : MonoBehaviour
         return growingObject;
     }
 
-    public void FreezePlant(Transform plantTransform){
+    public void FeaturePlant(Transform plantTransform, TileState tileState){
+        Material changeMat = null;
+        switch (tileState){
+            case TileState.Frozen:
+                changeMat =  frozenMat;
+                break;
+            case TileState.Evil:
+                changeMat =  evilMat;
+                break;
+            default:
+                Debug.LogError("Error In FeaturePlant");
+                break;
+        }
         for (int i = 0; i < plantTransform.childCount; i++)
         {
             Transform child = plantTransform.GetChild(i);
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             if (meshRenderer != null){
-                meshRenderer.material = frozenMat;
+                meshRenderer.material = changeMat;
             }
             if (child.childCount > 0){
-                FreezePlant(child);
+                FeaturePlant(child, tileState);
             }
         }
     }
 
-    public Material GetGrowinFrozenMat(){
-        return growingFrozenEffectMat;
+    public Material GetGrowingFeatureMat(TileState tileState){
+        switch (tileState){
+            case TileState.Frozen:
+                return growingFrozenEffectMat;
+            case TileState.Evil:
+                return growingEvilEffectMat;
+            default:
+                Debug.LogError("Error In GetFeatureMat");
+                return null;
+        }
+        
     }
 
     public void IncrementScore(){

@@ -19,6 +19,7 @@ public class Plant : MonoBehaviour
     public int timesToBeWatered;
     public PlantType plantType;
     private bool isFreezed;
+    private bool isEvil;
 
     private Animator plantAnim;
     private Animator seedAnim;
@@ -33,6 +34,7 @@ public class Plant : MonoBehaviour
         timeWateredGrown = Time.fixedDeltaTime /(timeToGrowMins * 60f / timesToBeWatered );
         countWatered = 0;
         isFreezed = false;
+        isEvil = false;
     }
 
     void Update(){
@@ -67,17 +69,20 @@ public class Plant : MonoBehaviour
         float endAnimTime = 1f/timesToBeWatered * countWatered;
 
         float randSec = Random.value;
-        if(System.DateTime.Now.Minute % 2 == 0){
+        int minute = System.DateTime.Now.Minute;
+        if(minute % 2 == 0){
             randSec = 1-randSec;
         }
         if(randSec < (float)System.DateTime.Now.Second/60){
             isFreezed = true;
+        }else if(Random.Range(0, 9) == minute % 10){
+            isEvil = true;
         }
 
         for (float t = startAnimTime; t <= endAnimTime; t += timeToGrow)
         {
             if(isFreezed && t>endAnimTime/2){
-                controller.FreezePlant(transform);
+                controller.FeaturePlant(transform, TileState.Frozen);
                 Tile tile = transform.parent.GetComponent<Tile>();
                 tile.SetTileState(TileState.Frozen);
                 plantAnim.Play("Growing", 0, t);
@@ -87,9 +92,29 @@ public class Plant : MonoBehaviour
 
                 Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
                 Material normalGrowingMat = growEffectRend.material;
-                growEffectRend.material = controller.GetGrowinFrozenMat();
+                growEffectRend.material = controller.GetGrowingFeatureMat(TileState.Frozen);
 
                 yield return new WaitUntil(() => !isFreezed);
+
+                growEffectRend.material = normalGrowingMat;
+
+                plantAnim.speed = 1;
+                seedAnim.speed = 1;
+                tile.SetTileState(TileState.Watered);
+            }else if(isEvil && t>endAnimTime/2){
+                controller.FeaturePlant(transform, TileState.Evil);
+                Tile tile = transform.parent.GetComponent<Tile>();
+                tile.SetTileState(TileState.Evil);
+                plantAnim.Play("Growing", 0, t);
+                seedAnim.Play("Shrinking", 0, t);
+                plantAnim.speed = 0;
+                seedAnim.speed = 0;
+
+                Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
+                Material normalGrowingMat = growEffectRend.material;
+                growEffectRend.material = controller.GetGrowingFeatureMat(TileState.Evil);
+
+                yield return new WaitUntil(() => !isEvil);
 
                 growEffectRend.material = normalGrowingMat;
 
@@ -117,6 +142,10 @@ public class Plant : MonoBehaviour
 
     public void UnFreezePlant(){
         isFreezed = false;
+    }
+
+    public void UnEvilPlant(){
+        isEvil = false;
     }
 
     public PlantType GetPlantType(){
