@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpellPanel : MonoBehaviour
 {
-    public ActionController actionController;
+    public Controller controller;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +18,17 @@ public class SpellPanel : MonoBehaviour
     }
 
     public void ChangeSpellToWater(){
-        actionController.ChangeCurrentAction(ActionType.SpellThrow);
-        actionController.ChangeCurrentSpell(SpellType.Water);
+        controller.ChangeCurrentAction(ActionType.SpellThrow);
+        controller.ChangeCurrentSpell(SpellType.Water);
     }
 
     public void ChangeSpellToFire(){
-        actionController.ChangeCurrentAction(ActionType.SpellThrow);
-        actionController.ChangeCurrentSpell(SpellType.Fire);
+        controller.ChangeCurrentAction(ActionType.SpellThrow);
+        controller.ChangeCurrentSpell(SpellType.Fire);
+    }
+
+    public void ChangeSpellToWindCut(){
+        controller.ChangeCurrentAction(ActionType.SpellThrow);
+        controller.ChangeCurrentSpell(SpellType.WindCut);
     }
 }

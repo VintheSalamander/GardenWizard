@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +14,7 @@ public enum TileState
 
 public class Tile : MonoBehaviour
 {
-    public ActionController actionController;
+    public Controller controller;
     public Material groundMat;
     public Material wateredMat;
     public Material seededMat;
@@ -27,7 +26,7 @@ public class Tile : MonoBehaviour
     Collider colliderTile;
     Camera cam;
     bool isSelected;
-
+    PlantType correctPlant;
     GameObject currentPlant;
 
     // Start is called before the first frame update
@@ -40,6 +39,7 @@ public class Tile : MonoBehaviour
         colliderTile = GetComponent<Collider>();
         
         rendererTile.material = groundMat;
+        correctPlant = GetRandomPlant();
     }
 
     // Update is called once per frame
@@ -52,6 +52,7 @@ public class Tile : MonoBehaviour
 
         if (colliderTile.Raycast(ray, out hit, Mathf.Infinity))
         {
+            Debug.Log(correctPlant);
             rendererTile.material.SetColor("_SquareTop", Color.white);
             isSelected = true;
         }else{
@@ -79,7 +80,7 @@ public class Tile : MonoBehaviour
 
         if(isSelected){
             if (Input.GetMouseButtonDown(0)){
-                actionController.DoAction(gameObject);
+                controller.DoAction(this);
             }
         }
     }
@@ -105,6 +106,9 @@ public class Tile : MonoBehaviour
                 break;
             case TileState.Grown:
                 rendererTile.material = grownMat;
+                if(currentPlant.GetComponent<Plant>().GetPlantType() == correctPlant){
+                    controller.IncrementScore();
+                }
                 break;
             default:
                 break;
@@ -118,4 +122,16 @@ public class Tile : MonoBehaviour
         return currentPlant;
     }
 
+    public PlantType GetCorrectPlant(){
+        return correctPlant;
+    }
+
+    PlantType GetRandomPlant(){
+        float rand = Random.value;
+        if(rand <= 0.1f)
+            return PlantType.CherryBlossom;
+        if(rand <= 0.4f)
+            return PlantType.Tomato;
+        return PlantType.Daisy;
+    }
 }

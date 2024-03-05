@@ -5,9 +5,9 @@ using UnityEngine;
 
 public enum PlantType
 {
-    Tomato,
-    CherryBlossom,
-    Daisy
+    Tomato = 5,
+    CherryBlossom = 20,
+    Daisy = 2
 }
 
 public class Plant : MonoBehaviour
@@ -24,7 +24,7 @@ public class Plant : MonoBehaviour
     private Animator seedAnim;
     private float timeWateredGrown;
     private int countWatered;
-    private ActionController actionController;
+    private Controller controller;
     private GameObject growingObject;
 
     void Awake(){
@@ -41,8 +41,8 @@ public class Plant : MonoBehaviour
         }
     }
 
-    public void WaterPlant(ActionController actCon, float delay){
-        actionController = actCon;
+    public void WaterPlant(Controller con, float delay){
+        controller = con;
         StartCoroutine(WateringWithDelay(delay));
     }
 
@@ -52,7 +52,7 @@ public class Plant : MonoBehaviour
             plantAnim.SetBool("isGrowing", true);
             seedAnim.SetBool("isShrinking", true);
         }
-        growingObject = actionController.StartGrowingEffect(transform.position);
+        growingObject = controller.StartGrowingEffect(transform.position);
         countWatered += 1;
         StartCoroutine(PlayGrowingSmoothly(timeWateredGrown));
     }
@@ -65,13 +65,19 @@ public class Plant : MonoBehaviour
         seedAnim.Play("Shrinking", 0, 0f);
         float startAnimTime = 1f/timesToBeWatered * (countWatered - 1);
         float endAnimTime = 1f/timesToBeWatered * countWatered;
-        if(Random.value < 0.5f){
+
+        float randSec = Random.value;
+        if(System.DateTime.Now.Minute % 2 == 0){
+            randSec = 1-randSec;
+        }
+        if(randSec < (float)System.DateTime.Now.Second/60){
             isFreezed = true;
         }
+
         for (float t = startAnimTime; t <= endAnimTime; t += timeToGrow)
         {
             if(isFreezed && t>endAnimTime/2){
-                actionController.FreezePlant(transform);
+                controller.FreezePlant(transform);
                 Tile tile = transform.parent.GetComponent<Tile>();
                 tile.SetTileState(TileState.Frozen);
                 plantAnim.Play("Growing", 0, t);
@@ -81,7 +87,7 @@ public class Plant : MonoBehaviour
 
                 Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
                 Material normalGrowingMat = growEffectRend.material;
-                growEffectRend.material = actionController.GetGrowinFrozenMat();
+                growEffectRend.material = controller.GetGrowinFrozenMat();
 
                 yield return new WaitUntil(() => !isFreezed);
 

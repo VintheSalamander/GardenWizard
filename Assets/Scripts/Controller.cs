@@ -6,16 +6,16 @@ using UnityEngine;
 public enum ActionType{
     None,
     PlantSeed,
-    SpellThrow
-    
+    SpellThrow,
 }
 
 public enum SpellType{
     Water,
-    Fire
+    Fire,
+    WindCut
 }
 
-public class ActionController : MonoBehaviour
+public class Controller : MonoBehaviour
 {
     public static ActionType currentAction;
     public static PlantType currPlantType;
@@ -30,14 +30,29 @@ public class ActionController : MonoBehaviour
     public Material growingFrozenEffectMat;
     public TextMeshProUGUI textAid;
     public TextMeshProUGUI textAction;
+    public TextMeshProUGUI textScore;
+    public TextMeshProUGUI textMoney;
     public float delayTextInSec;
     public float delayWateringInSec;
+    private int score;
+    private int money;
 
     void Awake(){
         textAction.text = "Action: None";
+        score = 0;
+        textScore.text = "0%";
+        money = 2;
+        textMoney.text = money.ToString();
     }
-    public void DoAction(GameObject tileObject){
-        Tile tile = tileObject.GetComponent<Tile>();
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.U)){
+            money += 50;
+            textMoney.text = money.ToString();
+        }
+    }
+
+    public void DoAction(Tile tile){
         TileState tileState = tile.GetCurrentState();
         switch (currentAction){
             case ActionType.None:
@@ -56,6 +71,10 @@ public class ActionController : MonoBehaviour
                                 textAid.text = "Careful with that!";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
+                            case SpellType.WindCut:
+                                textAid.text = "Nothing to cut here";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                         }
                         break;
                     case TileState.Seeded:
@@ -70,6 +89,10 @@ public class ActionController : MonoBehaviour
                                 textAid.text = "Dont burn here!";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
+                            case SpellType.WindCut:
+                                textAid.text = "Let it grow first";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                         }
                         break;
                     case TileState.Watered:
@@ -80,6 +103,10 @@ public class ActionController : MonoBehaviour
                                 break;
                             case SpellType.Fire:
                                 textAid.text = "Stop unwatering!";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
+                            case SpellType.WindCut:
+                                textAid.text = "Is growing be patient";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
                         }
@@ -95,6 +122,10 @@ public class ActionController : MonoBehaviour
                                 GameObject fireInstance = Instantiate(fireEffect, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
                                 StartCoroutine(UnFreezeAndDeleteFire(fireInstance, tile.GetCurrentPlant()));
                                 break;
+                            case SpellType.WindCut:
+                                textAid.text = "Can't cut ice...";
+                                StartCoroutine(EmptyTextAfterDelay());
+                                break;
                         }
                         break;
                     case TileState.Grown:
@@ -107,6 +138,27 @@ public class ActionController : MonoBehaviour
                                 textAid.text = "That is healthy!";
                                 StartCoroutine(EmptyTextAfterDelay());
                                 break;
+                            case SpellType.WindCut:
+                                GameObject plantObject = tile.GetCurrentPlant();
+                                tile.SetTileState(TileState.Normal);
+                                PlantType plantType = plantObject.GetComponent<Plant>().GetPlantType();
+                                if(plantType == tile.GetCorrectPlant()){
+                                    DecrementScore();
+                                }
+                                switch(plantType){
+                                    case PlantType.Tomato:
+                                        money += (int)plantType + 4;
+                                        break;
+                                    case PlantType.CherryBlossom:
+                                        money += (int)plantType + 8;
+                                        break;
+                                    case PlantType.Daisy:
+                                        money += (int)plantType + 2;
+                                        break;
+                                }
+                                textMoney.text = money.ToString();
+                                Destroy(plantObject);
+                                break;
                         }
                         break;
                     default:
@@ -116,21 +168,31 @@ public class ActionController : MonoBehaviour
             case ActionType.PlantSeed:
                 GameObject newPlant = tile.GetCurrentPlant();
                 if(newPlant == null && tileState == TileState.Normal){
-                    Vector3 tilePos = tile.transform.position;
-                    switch(currPlantType){
-                        case PlantType.Tomato:
-                            newPlant = Instantiate(tomatoPlant, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
-                            break;
-                        case PlantType.CherryBlossom:
-                            newPlant = Instantiate(cherryBlossom, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
-                            break;
-                        case PlantType.Daisy:
-                            newPlant = Instantiate(daisyFlower, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
-                            break;
+                    if(money >= (int)currPlantType){
+                        Vector3 tilePos = tile.transform.position;
+                        GameObject newPlantPrefab = null;
+                        switch(currPlantType){
+                            case PlantType.Tomato:
+                                newPlantPrefab = tomatoPlant;
+                                break;
+                            case PlantType.CherryBlossom:
+                                newPlantPrefab = cherryBlossom;
+                                break;
+                            case PlantType.Daisy:
+                                newPlantPrefab = daisyFlower;
+                                break;
+                        }
+                        newPlant = Instantiate(newPlantPrefab, new Vector3(tilePos.x, tilePos.y + 0.5f, tilePos.z), Quaternion.identity);
+                        newPlant.transform.SetParent(tile.transform);
+                        tile.SetCurrentPlant(newPlant);
+                        tile.SetTileState(TileState.Seeded);  
+                        money -= (int)currPlantType;
+                        textMoney.text = money.ToString();
+                    }else{
+                        textAid.text = "No money sorry";
+                        StartCoroutine(EmptyTextAfterDelay());
                     }
-                    newPlant.transform.SetParent(tile.transform);
-                    tile.SetCurrentPlant(newPlant);
-                    tile.SetTileState(TileState.Seeded);
+                    
                 }
                 break;
             default:
@@ -236,5 +298,20 @@ public class ActionController : MonoBehaviour
 
     public Material GetGrowinFrozenMat(){
         return growingFrozenEffectMat;
+    }
+
+    public void IncrementScore(){
+        score += 1;
+        textScore.text = ((int)((float)score/64*100)).ToString() + "%";
+        money += 2;
+        textMoney.text = money.ToString();
+    }
+
+    public void DecrementScore(){
+        score -= 1;
+        if(score < 0){
+            score = 0;
+        }
+        textScore.text = ((int)((float)score/64*100)).ToString() + "%";
     }
 }
