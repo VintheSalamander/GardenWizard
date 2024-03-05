@@ -351,10 +351,10 @@ public class Controller : MonoBehaviour
                 textAction.text = "Action: Fire";
                 break;
             case SpellType.Electrical:
-                textAction.text = "Action: Electrical";
+                textAction.text = "Action: Lightning";
                 break;
             case SpellType.WindCut:
-                textAction.text = "Action: Wind Cut";
+                textAction.text = "Action: Cut";
                 break;
         }
     }

@@ -61,8 +61,8 @@ public class Plant : MonoBehaviour
 
     IEnumerator PlayGrowingSmoothly(float timeToGrow)
     {
-        plantAnim.speed = 1;
-        seedAnim.speed = 1;
+        plantAnim.speed = 0;
+        seedAnim.speed = 0;
         plantAnim.Play("Growing", 0, 0f);
         seedAnim.Play("Shrinking", 0, 0f);
         float startAnimTime = 1f/timesToBeWatered * (countWatered - 1);
@@ -78,17 +78,14 @@ public class Plant : MonoBehaviour
         }else if(Random.Range(0, 5) == minute % 5){
             isEvil = true;
         }
-
         for (float t = startAnimTime; t <= endAnimTime; t += timeToGrow)
         {
-            if(isFreezed && t>endAnimTime/2){
+            if(isFreezed && t > startAnimTime + (endAnimTime-startAnimTime)/2){
                 controller.FeaturePlant(transform, TileState.Frozen);
                 Tile tile = transform.parent.GetComponent<Tile>();
                 tile.SetTileState(TileState.Frozen);
                 plantAnim.Play("Growing", 0, t);
                 seedAnim.Play("Shrinking", 0, t);
-                plantAnim.speed = 0;
-                seedAnim.speed = 0;
 
                 Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
                 Material normalGrowingMat = growEffectRend.material;
@@ -98,8 +95,6 @@ public class Plant : MonoBehaviour
 
                 growEffectRend.material = normalGrowingMat;
 
-                plantAnim.speed = 1;
-                seedAnim.speed = 1;
                 tile.SetTileState(TileState.Watered);
             }else if(isEvil && t>endAnimTime/2){
                 controller.FeaturePlant(transform, TileState.Evil);
@@ -107,8 +102,6 @@ public class Plant : MonoBehaviour
                 tile.SetTileState(TileState.Evil);
                 plantAnim.Play("Growing", 0, t);
                 seedAnim.Play("Shrinking", 0, t);
-                plantAnim.speed = 0;
-                seedAnim.speed = 0;
 
                 Renderer growEffectRend = growingObject.GetComponentInChildren<Renderer>();
                 Material normalGrowingMat = growEffectRend.material;
@@ -118,8 +111,6 @@ public class Plant : MonoBehaviour
                 controller.ReduceMoney();
                 growEffectRend.material = normalGrowingMat;
 
-                plantAnim.speed = 1;
-                seedAnim.speed = 1;
                 tile.SetTileState(TileState.Watered);
             }else{
                 plantAnim.Play("Growing", 0, t);
@@ -135,8 +126,6 @@ public class Plant : MonoBehaviour
         }else{
             transform.parent.GetComponent<Tile>().SetTileState(TileState.Seeded);
         }
-        plantAnim.speed = 0;
-        seedAnim.speed = 0;
         Destroy(growingObject);
     }
 
