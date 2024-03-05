@@ -45,10 +45,10 @@ Material:
     - _NoiseScale: 8.53
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step: 0.29
+    - _Step: 0.55
     m_Colors:
-    - _Color: {r: 0.13207549, g: 0.050587393, b: 0.08015385, a: 0}
-    - _Color_1: {r: 1, g: 0.1566037, b: 0.21845269, a: 0}
+    - _Color: {r: 0.031292256, g: 0.13207549, b: 0.02068351, a: 0}
+    - _Color_1: {r: 0.62292475, g: 2, b: 0.31372547, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4095402501539465964
 MonoBehaviour:

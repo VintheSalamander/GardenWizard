@@ -173,7 +173,7 @@ public class Controller : MonoBehaviour
                                         money += (int)plantType + 5;
                                         break;
                                     case PlantType.CherryBlossom:
-                                        money += (int)plantType + 10;
+                                        money += (int)plantType + 15;
                                         break;
                                     case PlantType.Daisy:
                                         money += (int)plantType + 2;
@@ -432,6 +432,9 @@ public class Controller : MonoBehaviour
 
     public void ReduceMoney(){
         money -= 2;
+        if(money < 0){
+            money = 0;
+        }
         textMoney.text = money.ToString();
     }
 }
