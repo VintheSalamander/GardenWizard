@@ -147,10 +147,10 @@ public class Controller : MonoBehaviour
                                 }
                                 switch(plantType){
                                     case PlantType.Tomato:
-                                        money += (int)plantType + 4;
+                                        money += (int)plantType + 5;
                                         break;
                                     case PlantType.CherryBlossom:
-                                        money += (int)plantType + 8;
+                                        money += (int)plantType + 10;
                                         break;
                                     case PlantType.Daisy:
                                         money += (int)plantType + 2;
@@ -227,6 +227,9 @@ public class Controller : MonoBehaviour
                 break;
             case PlantType.Daisy:
                 prefabToCompare = daisyFlower;
+                break;
+            default:
+                Debug.LogError("Error in UnFreezeAndDeleteFire");
                 break;
         }
         UnFreezeWithComparison(prefabToCompare.transform, plantToUnfreeze.transform);

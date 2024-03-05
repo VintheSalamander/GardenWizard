@@ -46,11 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8cb1f3bd68fa54d85a2b5fcff9ba0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plantPrefab: {fileID: 184984720519629021}
   plant: {fileID: 7479953630817802228}
   seed: {fileID: 2270275132850131614}
   timeToGrowMins: 3
   timesToBeWatered: 2
-  plantType: 0
+  plantType: 5
 --- !u!1 &1418744337949068723
 GameObject:
   m_ObjectHideFlags: 0

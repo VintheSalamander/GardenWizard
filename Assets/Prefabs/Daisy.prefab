@@ -837,6 +837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8cb1f3bd68fa54d85a2b5fcff9ba0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plantPrefab: {fileID: 3388427679563196536}
   plant: {fileID: 5015052955214055626}
   seed: {fileID: 1992372605834502181}
   timeToGrowMins: 1

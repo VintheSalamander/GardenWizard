@@ -5,8 +5,8 @@ using UnityEngine;
 
 public enum PlantType
 {
-    Tomato = 5,
-    CherryBlossom = 20,
+    Tomato = 10,
+    CherryBlossom = 30,
     Daisy = 2
 }
 
